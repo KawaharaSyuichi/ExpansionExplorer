@@ -1,0 +1,67 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:pa="clr-namespace:GUIConsole.Wpf;assembly=GUIConsole.Wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConvert"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" MinWidth="100"/>
+        </Grid.ColumnDefinitions>
+
+        <Menu x:Name="MainMenu" Grid.Row="0" Grid.Column="0" Height="30">
+            <MenuItem Header="設定" Height="{Binding ElementName=MainMenu, Path=Height}">
+                <MenuItem Header="ターミナル表示">
+                    <MenuItem.Icon>
+                        <CheckBox IsChecked="{Binding bUseTerminal}" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="100"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="3*" MinWidth="100"/>
+            </Grid.ColumnDefinitions>
+            
+            <TreeView x:Name="FolderTree" Grid.Column="0"
+                  SelectedItemChanged="FolderTree_SelectedItemChanged"/>
+
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ListView x:Name="FileList" Grid.Row="0" MinHeight="100">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200"/>
+                            <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" Width="100"/>
+                            <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Size}" Width="100"/>
+                            <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding Modified}" Width="150"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <pa:ConsoleWindow x:Name ="TerminalView" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
