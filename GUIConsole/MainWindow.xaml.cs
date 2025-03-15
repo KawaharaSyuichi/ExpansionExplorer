@@ -15,6 +15,20 @@ namespace GUIConsole
         // 現在の入力開始位置（プロンプト直後のオフセット）
         private int inputStartOffset;
 
+        public string CurrentDirectory 
+        {
+            get { return currentDirectory; }
+            set 
+            {
+                if (currentDirectory != value) 
+                {
+                    currentDirectory = value;
+                    ClearPrompt();
+                    AppendPrompt();
+                }
+            }
+        }
+
         public TerminalView()
         {
             InitializeComponent();
@@ -60,6 +74,16 @@ namespace GUIConsole
             string prompt = $"{currentDirectory}> ";
             AppendToTerminal(prompt);
             inputStartOffset = TerminalEditor.Document.TextLength;
+        }
+
+        /// <summary>
+        /// 前のカレントディレクトリのパスを削除
+        /// </summary>
+        private void ClearPrompt() 
+        {
+            // 現在の入力開始位置からドキュメントの末尾までのテキストを削除
+            int lineOffset = TerminalEditor.Document.GetLineByOffset(inputStartOffset).Offset;
+            TerminalEditor.Document.Remove(lineOffset, TerminalEditor.Document.TextLength - lineOffset);
         }
 
         /// <summary>

@@ -19,25 +19,26 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public MainWindow()
+        {
+            InitializeComponent();
+            DataContext = this;
+            LoadDrives();
+        }
+
         private bool _bUseTerminal;
-        public bool bUseTerminal 
+        public bool bUseTerminal
         {
             get { return _bUseTerminal; }
-            set 
+            set
             {
-                if (_bUseTerminal != value) 
+                if (_bUseTerminal != value)
                 {
                     _bUseTerminal = value;
                     OnPropertyChanged();
                     UpdateGridRowDefinitions();
                 }
             }
-        }
-        public MainWindow()
-        {
-            InitializeComponent();
-            DataContext = this;
-            LoadDrives();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -76,6 +77,7 @@ namespace WpfApp1
                 return;
             }
 
+            // プレースホルダーがあれば削除して子要素を追加
             if (item.Items.Count == 1 && item.Items[0] == null)
             {
                 item.Items.Clear();
@@ -125,6 +127,8 @@ namespace WpfApp1
                 if (!string.IsNullOrEmpty(selectedPath))
                 {
                     LoadFiles(selectedPath);
+                    // ターミナルのカレントディレクトリを変更
+                    TerminalView.CurrentDirectory = selectedPath;
                 }
             }
         }
