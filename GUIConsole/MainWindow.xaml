@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="GUIConsole.TerminalView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        Height="Auto" 
+        Width="Auto">
+    <Grid>
+        <avalonedit:TextEditor x:Name="TerminalEditor"
+                           FontFamily="Consolas"
+                           FontSize="14"
+                           ShowLineNumbers="False" 
+                           Background="Black"
+                           Foreground="White"
+                               />
+    </Grid>
+</UserControl>
