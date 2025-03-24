@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Web.WebView2.Core;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -10,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfApp1
 {
@@ -199,6 +200,44 @@ namespace WpfApp1
                 {
                     parentGrid.RowDefinitions[0].Height = (GridLength)gridLengthConverter.ConvertFromString("*")!;
                     parentGrid.RowDefinitions[2].Height = (GridLength)gridLengthConverter.ConvertFromString("0")!;
+                }
+            }
+        }
+
+        private void FileList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // 左クリックでのダブルクリックのみ処理
+            if (e.ChangedButton != MouseButton.Left) 
+            {
+                return;
+            }
+
+            if (FileList.SelectedItem == null) 
+            {
+                return;
+            }
+
+            dynamic selectedItem = FileList.SelectedItem;
+            string itemType = selectedItem.Type;
+            string itemName = selectedItem.Name;
+            string itemPath = Path.Combine(TerminalView.CurrentDirectory, itemName);
+
+            if (itemType == "Folder")
+            {
+                // フォルダを選択した場合、そのフォルダをカレントディレクトリとしてターミナルを更新
+                TerminalView.CurrentDirectory = itemPath;
+                LoadFiles(itemPath);
+            }
+            else 
+            {
+                // ファイルの場合、そのファイルを開く
+                try 
+                {
+                    Process.Start(new ProcessStartInfo(itemPath){ UseShellExecute = true});
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"ファイルを開くことができませんでした: {ex.Message}");
                 }
             }
         }

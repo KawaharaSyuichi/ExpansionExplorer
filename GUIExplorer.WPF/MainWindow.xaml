@@ -47,7 +47,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <ListView x:Name="FileList" Grid.Row="0" MinHeight="100">
+                <ListView x:Name="FileList" Grid.Row="0" MinHeight="100" MouseDoubleClick="FileList_MouseDoubleClick">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200"/>
