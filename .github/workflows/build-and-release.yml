@@ -22,6 +22,9 @@ jobs:
       - name: Restore NuGet packages
         run: dotnet restore ExpansionExplorer.sln
 
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2 # Set up MSBuild for building .NET projects
+
       - name: Build solution
         run: msbuild ExpansionExplorer.sln /p:Configuration=Release
 
