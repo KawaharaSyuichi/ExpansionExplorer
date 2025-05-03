@@ -14,8 +14,13 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x  # Specify the .NET version to use
+
+      - name: Restore NuGet packages
+        run: dotnet restore ExpansionExplorer.sln
 
       - name: Build solution
         run: msbuild ExpansionExplorer.sln /p:Configuration=Release
