@@ -28,10 +28,17 @@ jobs:
       - name: Build solution
         run: msbuild ExpansionExplorer.sln /p:Configuration=Release
 
-      - name: Upload EXE to release
+      - name: Publish GUIExplorer.WPF
+        run: dotnet publish GUIExplorer.WPF/GUIExplorer.WPF.csproj -c Release -r win-x64 --self-contained false -o publish
+
+      # Create a ZIP file of the published output
+      - name: Create release ZIP
+        run: Compress-Archive -Path publish\* -DestinationPath GUIExplorer.WPF.zip
+
+      # Upload the ZIP file to the GitHub release
+      - name: Upload ZIP to release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            **/bin/Release/net*/**/*.exe
+          files: GUIExplorer.WPF.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
